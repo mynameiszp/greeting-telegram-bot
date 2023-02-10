@@ -17,10 +17,21 @@ public class GreetingBot extends TelegramLongPollingBot {
 
             log.info("[{}, {}] : {}", userId, userFirstName, textFromUser);
 
-            SendMessage sendMessage = SendMessage.builder()
-                    .chatId(userId.toString())
-                    .text("Hello, I've received your text: " + textFromUser)
-                    .build();
+            SendMessage sendMessage;
+
+            if (textFromUser.equals("/start")) {
+                sendMessage = SendMessage.builder()
+                        .chatId(userId.toString())
+                        .text("Привіт! Представся, будь ласка, або напиши ім'я того, " +
+                                "для кого ти хочеш побачити привітання:)")
+                        .build();
+            }
+            else {
+                sendMessage = SendMessage.builder()
+                        .chatId(userId.toString())
+                        .text("Привіт, " + textFromUser + ". Раді тебе тут бачити!:)")
+                        .build();
+            }
             try {
                 this.sendApiMethod(sendMessage);
             } catch (TelegramApiException e) {
